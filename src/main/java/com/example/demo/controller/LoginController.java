@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Login;
 import com.example.demo.model.LoginRequest;
+import com.example.demo.model.LoginResponse;
 import com.example.demo.service.LoginService;
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,12 +57,15 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         boolean authenticated = loginService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         if (authenticated) {
-            return ResponseEntity.ok("Login successful");
+            String token = loginService.generateTokenForUser(loginRequest.getEmail());
+            LoginResponse response = new LoginResponse(token, loginRequest.getEmail(), "Login successful");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new LoginResponse(null, null, "Invalid credentials"));
         }
     }
 } 

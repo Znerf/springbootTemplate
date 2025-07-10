@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.model.Login;
 import com.example.demo.repository.LoginRepository;
+import com.example.demo.util.JwtUtil;
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,13 @@ import java.util.Optional;
 public class LoginService {
     private final LoginRepository loginRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     // @Autowired
-    public LoginService(LoginRepository loginRepository) {
+    public LoginService(LoginRepository loginRepository, JwtUtil jwtUtil) {
         this.loginRepository = loginRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.jwtUtil = jwtUtil;
     }
 
     @Transactional(readOnly = true) 
@@ -65,5 +68,10 @@ public class LoginService {
     public boolean authenticate(String email, String rawPassword) {
         Optional<Login> userOpt = loginRepository.findByEmail(email);
         return userOpt.isPresent() && passwordEncoder.matches(rawPassword, userOpt.get().getPassword());
+    }
+
+    @Transactional(readOnly = true)
+    public String generateTokenForUser(String email) {
+        return jwtUtil.generateToken(email);
     }
 } 
