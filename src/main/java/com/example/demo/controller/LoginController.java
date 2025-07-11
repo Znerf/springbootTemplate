@@ -22,10 +22,10 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    // @GetMapping
-    // public List<Login> getAllLogins() {
-    //     return loginService.getAllLogins();
-    // }
+    @GetMapping
+    public List<Login> getAllLogins() {
+        return loginService.getAllLogins();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Login> getLoginById(@PathVariable Long id) {
