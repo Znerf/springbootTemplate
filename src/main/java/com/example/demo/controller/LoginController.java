@@ -22,10 +22,10 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @GetMapping
-    public List<Login> getAllLogins() {
-        return loginService.getAllLogins();
-    }
+    // @GetMapping
+    // public List<Login> getAllLogins() {
+    //     return loginService.getAllLogins();
+    // }
 
     @GetMapping("/{id}")
     public ResponseEntity<Login> getLoginById(@PathVariable Long id) {
@@ -50,11 +50,11 @@ public class LoginController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteLogin(@PathVariable Long id) {
-        loginService.deleteLogin(id);
-    }
+    // @DeleteMapping("/{id}")
+    // @ResponseStatus(HttpStatus.NO_CONTENT)
+    // public void deleteLogin(@PathVariable Long id) {
+    //     loginService.deleteLogin(id);
+    // }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
